@@ -1,27 +1,22 @@
 package gee
 
-import (
-	"fmt"
-	"net/http"
-)
+import "net/http"
 
 // HandlerFunc 函数类型，input与output一致，便为同一类型
-type HandlerFunc func(w http.ResponseWriter, r *http.Request)
+type HandlerFunc func(c *Context)
 
 type Engine struct {
 	// map记录path与handler的映射关系
-	router map[string]HandlerFunc
+	router *router
 }
 
 func New() *Engine {
-	return &Engine{router: make(map[string]HandlerFunc)}
+	return &Engine{router: newRouter()}
 }
 
 func (engine *Engine) addRouter(method string, pattern string, handler HandlerFunc) {
 	// URL
-	key := method + "-" + pattern
-	// handler 实现url与handler的映射
-	engine.router[key] = handler
+	engine.router.addRouter(method, pattern, handler)
 }
 
 func (engine *Engine) GET(pattern string, handler HandlerFunc) {
@@ -37,11 +32,7 @@ func (engine *Engine) Run(add string) (err error) {
 }
 
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	key := r.Method + "-" + r.URL.Path
 
-	if handler, ok := engine.router[key]; ok {
-		handler(w, r)
-	} else {
-		fmt.Fprintf(w, "404 NOT FOUND: %s\n", r.URL)
-	}
+	c := newContext(w, r)
+	engine.router.handle(c)
 }
