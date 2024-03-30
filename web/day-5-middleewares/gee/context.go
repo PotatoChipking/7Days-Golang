@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// Context 将交互信息进行封装
 type Context struct {
 	// origin objects
 	Writer http.ResponseWriter
@@ -16,6 +17,24 @@ type Context struct {
 	Params map[string]string
 	// response info
 	StatusCode int
+
+	// middleware
+	handlers []HandlerFunc
+	index    int
+}
+
+// middleware新增method
+func (c *Context) Next() {
+	c.index++
+	s := len(c.handlers)
+	for ; c.index < s; c.index++ {
+		c.handlers[c.index](c)
+	}
+}
+
+func (c *Context) Fail(status int, format string) {
+	c.Status(status)
+	c.Writer.Write([]byte(fmt.Sprintf(format)))
 }
 
 func (c *Context) Param(key string) string {
@@ -34,6 +53,7 @@ func newContext(w http.ResponseWriter, r *http.Request) *Context {
 		Req:    r,
 		Path:   r.URL.Path,
 		Method: r.Method,
+		index:  -1,
 	}
 }
 

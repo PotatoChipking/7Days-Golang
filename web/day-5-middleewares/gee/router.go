@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// 原本的map改为了trie
 type router struct {
 	roots   map[string]*node
 	handles map[string]HandlerFunc
@@ -76,7 +77,6 @@ func (r *router) handle(c *Context) {
 	n, params := r.getRouter(c.Method, c.Path)
 	if n != nil {
 		c.Params = params
-		// Get + url对应的handler
 		key := c.Method + "-" + n.pattern
 		r.handles[key](c)
 	} else {
