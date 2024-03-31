@@ -56,6 +56,7 @@ func main() {
 	})
 	// index out of range for testing Recovery()
 	r.GET("/panic", func(c *gee.Context) {
+		// 这里数组越界，recovery函数检测是否存在panic，因此中间件recovery被触发。
 		names := []string{"geektutu"}
 		c.String(http.StatusOK, names[100])
 	})

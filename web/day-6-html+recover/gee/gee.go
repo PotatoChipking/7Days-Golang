@@ -119,11 +119,16 @@ func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	var middlewares []HandlerFunc
 	for _, group := range engine.groups {
 		if strings.HasPrefix(req.URL.Path, group.prefix) {
+			// 通过use将中间件添加至group中
+			// 这里对group的prefix进行检查，确定中间件是否可用
+			// 若可用则将其加入c的handle中
 			middlewares = append(middlewares, group.middlewares...)
 		}
 	}
 	c := newContext(w, req)
+	// 将中间件加入context的handler中
 	c.handlers = middlewares
 	c.engine = engine
+	// 再将响应的url-handle写入至c的handle中
 	engine.router.handle(c)
 }
