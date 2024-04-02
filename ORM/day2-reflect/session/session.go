@@ -1,23 +1,27 @@
 package session
 
 import (
+	"7days-golang-learn/ORM/day2-reflect/dialect"
+	"7days-golang-learn/ORM/day2-reflect/log"
+	"7days-golang-learn/ORM/day2-reflect/schema"
 	"database/sql"
-	"day1/log"
 	"strings"
 )
 
 type Session struct {
-	// 连接数据库
 	db *sql.DB
-	// SQL语句中的空格需要识别，拼接。
-	//  s.sql = "SELECT * FROM users WHERE id = ?"，而 sqlVars = []interface{}{123}
+	// 新增数据库类型转化dialect与模式映射
+	dialect  dialect.Dialect
+	refTable *schema.Schema
+
 	sql     strings.Builder
 	sqlVars []interface{}
 }
 
-func New(db *sql.DB) *Session {
+func New(db *sql.DB, dialect dialect.Dialect) *Session {
 	return &Session{
-		db: db,
+		db:      db,
+		dialect: dialect,
 	}
 }
 
