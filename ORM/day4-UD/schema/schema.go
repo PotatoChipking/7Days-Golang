@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"7days-golang-learn/ORM/day3-create-delete/dialect"
+	"7days-golang-learn/ORM/day4-UD/dialect"
 	"go/ast"
 	"reflect"
 )

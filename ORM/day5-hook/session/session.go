@@ -1,10 +1,10 @@
 package session
 
 import (
-	"7days-golang-learn/ORM/day3-create-delete/clause"
-	"7days-golang-learn/ORM/day3-create-delete/dialect"
-	"7days-golang-learn/ORM/day3-create-delete/log"
-	"7days-golang-learn/ORM/day3-create-delete/schema"
+	"7days-golang-learn/ORM/day5-hook/clause"
+	"7days-golang-learn/ORM/day5-hook/dialect"
+	"7days-golang-learn/ORM/day5-hook/log"
+	"7days-golang-learn/ORM/day5-hook/schema"
 	"database/sql"
 	"strings"
 )

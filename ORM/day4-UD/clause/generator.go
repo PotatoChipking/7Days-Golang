@@ -18,6 +18,10 @@ func init() {
 	generators[LIMIT] = _limit
 	generators[WHERE] = _where
 	generators[ORDERBY] = _orderBy
+
+	generators[UPDATE] = _update
+	generators[DELETE] = _delete
+	generators[COUNT] = _count
 }
 
 func genBindVars(num int) string {
@@ -26,6 +30,28 @@ func genBindVars(num int) string {
 		vars = append(vars, "?")
 	}
 	return strings.Join(vars, ", ")
+}
+
+func _update(values ...interface{}) (string, []interface{}) {
+	tableName := values[0]
+	m := values[1].(map[string]interface{})
+	var keys []string
+	var vars []interface{}
+	for k, v := range m {
+		keys = append(keys, k+" = ?")
+		vars = append(vars, v)
+	}
+	return fmt.Sprintf("UPDATE %s SET %s", tableName, strings.Join(keys, ", ")), vars
+}
+
+func _delete(value ...interface{}) (string, []interface{}) {
+	// []interface{}{}代表为空数组
+	return fmt.Sprintf("DELETE FROM %s", value[0]), []interface{}{}
+}
+
+func _count(values ...interface{}) (string, []interface{}) {
+	// 使用查询语句+count*
+	return _select(values[0], []string{"count(*)"})
 }
 
 func _insert(values ...interface{}) (string, []interface{}) {

@@ -1,10 +1,10 @@
 package session
 
 import (
-	"7days-golang-learn/ORM/day3-create-delete/clause"
-	"7days-golang-learn/ORM/day3-create-delete/dialect"
-	"7days-golang-learn/ORM/day3-create-delete/log"
-	"7days-golang-learn/ORM/day3-create-delete/schema"
+	"7days-golang-learn/ORM/day6-transaction/clause"
+	"7days-golang-learn/ORM/day6-transaction/dialect"
+	"7days-golang-learn/ORM/day6-transaction/log"
+	"7days-golang-learn/ORM/day6-transaction/schema"
 	"database/sql"
 	"strings"
 )
@@ -19,6 +19,33 @@ type Session struct {
 	sqlVars []interface{}
 	// SQL
 	clause clause.Clause
+
+	tx *sql.Tx
+}
+
+// 这里根据DB与TX的共性，提出接口方法
+// 后续可以根据不同需求，返回同一类型commenDB的不同实现：db、tx
+// 之前的db每个SQL单独执行，TX的区别在于sqlite对事务的支持
+// 因此提出共性后，可以按需选择db、TX
+
+type CommonDB interface {
+	Query(query string, args ...interface{}) (*sql.Rows, error)
+	QueryRow(query string, args ...interface{}) *sql.Row
+	Exec(query string, args ...interface{}) (sql.Result, error)
+}
+
+var _ CommonDB = (*sql.DB)(nil)
+var _ CommonDB = (*sql.Tx)(nil)
+
+// DB returns tx if a tx begins. otherwise return *sql.DB
+// 返回CommonDB对象，实例可以是db也可以是tx
+func (s *Session) DB() CommonDB {
+	// 选择tx实例
+	if s.tx != nil {
+		return s.tx
+	}
+	// 选择db实例
+	return s.db
 }
 
 func New(db *sql.DB, dialect dialect.Dialect) *Session {
@@ -32,10 +59,6 @@ func (s *Session) Clear() {
 	s.sql.Reset()
 	s.sqlVars = nil
 	s.clause = clause.Clause{}
-}
-
-func (s *Session) DB() *sql.DB {
-	return s.db
 }
 
 func (s *Session) Raw(sql string, values ...interface{}) *Session {
