@@ -2,8 +2,10 @@ package main
 
 import (
 	"day5/gee"
+	"fmt"
 	"log"
 	"net/http"
+	"runtime"
 	"time"
 )
 
@@ -35,4 +37,6 @@ func main() {
 	}
 
 	r.Run(":9999")
+
+	fmt.Println("Go版本为：", runtime.Version())
 }

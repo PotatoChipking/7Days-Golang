@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b8321dd7-1b4d-43cf-9d71-bb751cae66b3" name="Ubuntu">
+        <fileTransfer rootFolder="/home/gitproject/7Days-Golang" accessType="SFTP" host="192.168.14.12" port="22" sshConfigId="27ab8941-2514-46c3-bb69-2ef20fdb0b6e" sshConfig="root@192.168.14.12:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

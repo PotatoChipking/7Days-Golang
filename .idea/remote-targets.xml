@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="root@192.168.14.12:22" type="ssh/sftp" uuid="0040f481-d51d-4d7e-87b6-357dbc9a7fd6">
+        <config>
+          <option name="projectRootOnTarget" value="/home/gitproject/7Days-Golang" />
+          <option name="serverName" value="root@192.168.14.12:22 password" />
+        </config>
+        <ContributedStateBase type="GoLanguageRuntime">
+          <config>
+            <option name="compiledExecutablesVolume">
+              <VolumeState>
+                <option name="remotePath" value="/home/gitproject/7Days-Golang" />
+              </VolumeState>
+            </option>
+            <option name="goPath" value="/home/gowork" />
+            <option name="goRoot" value="/usr/local/go" />
+            <option name="projectSourcesVolume">
+              <VolumeState>
+                <option name="remotePath" value="/home/gitproject/7Days-Golang" />
+              </VolumeState>
+            </option>
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

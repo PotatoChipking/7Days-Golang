@@ -20,3 +20,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func counter(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "count", r.URL.Path)
 }
+
+//func main() {
+//	fmt.Println("Go版本为：", runtime.Version())
+//}
