@@ -10,8 +10,8 @@ import (
 type GobCodec struct {
 	conn io.ReadWriteCloser
 	buf  *bufio.Writer
-	dec  *gob.GobDecoder
-	enc  *gob.GobEncoder
+	dec  *gob.Decoder
+	enc  *gob.Encoder
 }
 
 var _ Codec = (*GobCodec)(nil)
@@ -21,8 +21,8 @@ func NewGobCodec(conn io.ReadWriteCloser) Codec {
 	return &GobCodec{
 		conn: conn,
 		buf:  buf,
-		dec:  gob.GobDecoder(conn),
-		enc:  gob.GobEncoder(buf),
+		dec:  gob.NewDecoder(conn),
+		enc:  gob.NewEncoder(buf),
 	}
 }
 
@@ -42,14 +42,10 @@ func (c *GobCodec) Write(h *Header, body interface{}) (err error) {
 		}
 	}()
 	if err := c.enc.Encode(h); err != nil {
-		log.Println("rpc codec: gob error encoding header:", err)
+		log.Println("rpc codec: gob error encodeing header:", err)
 		return err
 	}
-	if err := c.enc.Encode(body); err != nil {
-		log.Println("rpc codec: gob error encoding body:", err)
-		return err
-	}
-	return nil
+	return err
 }
 
 func (c *GobCodec) Close() error {
