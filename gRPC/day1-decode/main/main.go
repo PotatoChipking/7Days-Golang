@@ -20,6 +20,7 @@ func startServer(addr chan string) {
 	gRPC.Accept(l)
 }
 
+// rpc调用时，header和body类似存储中SSTable的block，对于变长数据，首先记录其长度，而后跟着该bits的数据。类似leveldb的batch实现。
 func main() {
 	addr := make(chan string)
 	go startServer(addr)

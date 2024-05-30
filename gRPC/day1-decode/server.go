@@ -56,6 +56,7 @@ func (server *Server) ServerConn(conn io.ReadWriteCloser) {
 		log.Println("rpc server: invalid magic number %x", opt.MagicNumber)
 		return
 	}
+	// 根据Code类型，创建对应的函数类型实例，例如Gob
 	f := codec.NewCodecFuncMap[opt.CodecType]
 	if f == nil {
 		log.Println("rpc server: invalid codec type %s", opt.CodecType)
