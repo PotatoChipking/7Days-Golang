@@ -40,6 +40,7 @@ func (s *Session) Find(values interface{}) error {
 		return err
 	}
 
+	// 将数据库数据写入至数据结构中
 	for rows.Next() {
 		dest := reflect.New(destType).Elem()
 		var values []interface{}
