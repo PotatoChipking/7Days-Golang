@@ -1,4 +1,4 @@
-package day2_client
+package day3_service
 
 import (
 	"fmt"
